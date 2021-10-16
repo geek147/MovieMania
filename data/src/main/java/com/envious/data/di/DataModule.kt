@@ -1,13 +1,9 @@
 package com.envious.data.di
 
 import com.envious.data.BuildConfig
-import com.envious.data.remote.GetPopularUseCaseImpl
-import com.envious.data.remote.GetTopRatedUseCaseImpl
 import com.envious.data.remote.MovieApiService
 import com.envious.data.repository.MovieRepositoryImpl
 import com.envious.domain.repository.MovieRepository
-import com.envious.domain.usecase.GetPopularUseCase
-import com.envious.domain.usecase.GetTopRatedUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -74,12 +70,4 @@ class DataModule {
     @Provides
     fun provideMovieRepository(repository: MovieRepositoryImpl):
         MovieRepository = repository
-
-    @Provides
-    fun provideGetPopularMovieUseCase(getPopularUseCase: GetPopularUseCaseImpl):
-        GetPopularUseCase = getPopularUseCase
-
-    @Provides
-    fun provideGetTopRatedUseCase(getTopRatedUseCase: GetTopRatedUseCaseImpl):
-        GetTopRatedUseCase = getTopRatedUseCase
 }

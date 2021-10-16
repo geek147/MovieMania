@@ -3,6 +3,7 @@ package com.envious.domain.util
 sealed class Result<out T : Any> {
 
     data class Success<T : Any>(val data: List<T>) : Result<List<T>>()
+    object SuccessNoReturn : Result<Unit>()
     data class Error(val exception: Exception) : Result<Nothing>()
     object Loading : Result<Nothing>()
 
@@ -11,6 +12,7 @@ sealed class Result<out T : Any> {
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$exception]"
             is Loading -> "Loading"
+            is SuccessNoReturn -> "SuccessNoReturn"
         }
     }
 }

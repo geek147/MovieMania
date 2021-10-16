@@ -14,7 +14,4 @@ interface FavoriteDao {
 
     @Query("DELETE FROM favorite_table WHERE id = :id")
     fun delete(id: Int)
-
-    @Query("SELECT * FROM favorite_table WHERE id = :id")
-    fun getFavoriteMovieById(id: Int): FavoriteEntity?
 }

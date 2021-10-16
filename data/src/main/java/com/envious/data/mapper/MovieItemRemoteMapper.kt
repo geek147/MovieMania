@@ -15,7 +15,9 @@ class MovieItemRemoteMapper : BaseMapperRepository<MovieItem, Movie> {
         video = item.video ?: false,
         originalLanguage = item.originalLanguage.orEmpty(),
         originalTitle = item.originalTitle.orEmpty(),
-        popularity = item.popularity ?: 0.0
+        popularity = item.popularity ?: 0.0,
+        isLiked = false,
+        isPopularMovie = false
     )
 
     override fun transformToRepository(item: Movie): MovieItem =

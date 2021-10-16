@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="movie"
+            type="com.envious.domain.model.Movie"/>
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:background="@android:color/holo_blue_light"
+            card_view:cardElevation="8dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            card_view:cardCornerRadius="5dp"
+            android:id="@+id/cardMovie"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_movie_poster"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                app:srcCompat="@drawable/ic_not_found"
+                tools:ignore="VectorDrawableCompat" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="10"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/card_category"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMovieTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    tools:text="@{movie.title}"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    tools:text="@{movie.releaseDate}"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/tg_favorite"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:textOff=""
+                android:textOn=""
+                android:layout_marginRight="10dp"
+                tools:layout_editor_absoluteX="334dp"
+                android:visibility="@{movie.isPopularMovie ? View.GONE : View.VISIBLE}"
+                tools:layout_editor_absoluteY="36dp" />
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

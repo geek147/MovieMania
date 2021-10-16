@@ -1,11 +1,13 @@
 package com.envious.data.repository
 
 import android.util.Log
+import com.envious.data.BuildConfig
 import com.envious.data.local.dao.FavoriteDao
 import com.envious.data.local.model.FavoriteEntity
 import com.envious.data.mapper.MovieItemLocalMapper
 import com.envious.data.mapper.MovieItemRemoteMapper
 import com.envious.data.remote.MovieApiService
+import com.envious.data.util.Constants
 import com.envious.domain.model.Movie
 import com.envious.domain.repository.MovieRepository
 import com.envious.domain.util.Result
@@ -17,14 +19,12 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
 
     override suspend fun getPopular(
-        apiKey: String,
-        language: String,
         page: Int,
     ): Result<List<Movie>> {
         return try {
             val result = movieApiService.getPopularMovie(
-                apiKey = apiKey,
-                language = language,
+                apiKey = BuildConfig.API_KEY,
+                language = Constants.MOVIE_LANGUAGE,
                 page = page
             )
             if (result.isSuccessful) {
@@ -34,9 +34,11 @@ class MovieRepositoryImpl @Inject constructor(
                 return if (remoteData != null && !items.isNullOrEmpty()) {
                     val listData = mutableListOf<Movie>()
                     items.forEach {
-                        listData.add(remoteMapper.transform(it!!))
+                        val data = remoteMapper.transform(it!!)
+                        data.isPopularMovie = true
+                        listData.add(data)
                     }
-                    Result.Success(listData)
+                    Result.Success(listData.toList())
                 } else {
                     Result.Success(emptyList())
                 }
@@ -50,14 +52,12 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTopRated(
-        apiKey: String,
-        language: String,
         page: Int,
     ): Result<List<Movie>> {
         return try {
             val result = movieApiService.getTopRatedMovie(
-                apiKey = apiKey,
-                language = language,
+                apiKey = BuildConfig.API_KEY,
+                language = Constants.MOVIE_LANGUAGE,
                 page = page
             )
             if (result.isSuccessful) {
@@ -69,7 +69,7 @@ class MovieRepositoryImpl @Inject constructor(
                     items.forEach {
                         listData.add(remoteMapper.transform(it!!))
                     }
-                    Result.Success(listData)
+                    Result.Success(listData.toList())
                 } else {
                     Result.Success(emptyList())
                 }
@@ -82,7 +82,7 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavoriteMovies(): List<Movie> {
+    override suspend fun getFavoriteMovies(): Result<List<Movie>> {
         val localMapper = MovieItemLocalMapper()
         val itemsFavorite = favoriteDao.getAllFavorites()
         val listData = mutableListOf<Movie>()
@@ -90,10 +90,10 @@ class MovieRepositoryImpl @Inject constructor(
         itemsFavorite.forEach {
             listData.add(localMapper.transform(it!!))
         }
-        return listData.toList()
+        return Result.Success(listData.toList())
     }
 
-    override suspend fun insertFavoriteMovie(movie: Movie) {
+    override suspend fun insertFavoriteMovie(movie: Movie): Result<Unit> {
         favoriteDao.insert(
             FavoriteEntity(
                 id = movie.id,
@@ -106,18 +106,15 @@ class MovieRepositoryImpl @Inject constructor(
                 posterPath = movie.posterPath,
                 releaseDate = movie.releaseDate,
                 title = movie.title,
-                video = movie.video
+                video = movie.video,
             )
         )
+
+        return Result.SuccessNoReturn
     }
 
-    override suspend fun getFavoriteMovieById(id: Int): Movie {
-        val localMapper = MovieItemLocalMapper()
-        val item = favoriteDao.getFavoriteMovieById(id)
-        return localMapper.transform(item!!)
-    }
-
-    override suspend fun deleteFavoriteMovie(id: Int) {
+    override suspend fun deleteFavoriteMovie(id: Int): Result<Unit> {
         favoriteDao.delete(id)
+        return Result.SuccessNoReturn
     }
 }

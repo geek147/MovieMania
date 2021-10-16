@@ -11,5 +11,7 @@ data class Movie(
     val posterPath: String,
     val releaseDate: String,
     val title: String,
-    val video: Boolean
+    val video: Boolean,
+    val isLiked: Boolean,
+    var isPopularMovie: Boolean
 )

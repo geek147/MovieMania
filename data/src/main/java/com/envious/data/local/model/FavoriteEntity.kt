@@ -15,5 +15,5 @@ data class FavoriteEntity(
     val posterPath: String?,
     val releaseDate: String?,
     val title: String?,
-    val video: Boolean?
+    val video: Boolean?,
 )
