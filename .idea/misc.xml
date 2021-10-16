@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/toggle_favorite.xml" value="0.3963541666666667" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.3677536231884058" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3677536231884058" />
         <entry key="app/src/main/res/layout/activity_tabbed.xml" value="0.21145833333333333" />

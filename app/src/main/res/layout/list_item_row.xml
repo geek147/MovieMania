@@ -25,6 +25,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             card_view:cardCornerRadius="5dp"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/cardMovie"
             android:layout_height="wrap_content">
 
@@ -42,11 +43,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="10"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             >
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="9"
+                android:layout_weight="8"
                 android:orientation="vertical"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@+id/card_category"
@@ -57,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
                     tools:text="@{movie.title}"/>
@@ -73,16 +76,16 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatToggleButton
-                android:id="@+id/tg_favorite"
+                android:id="@+id/tgFavorite"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:textOff=""
                 android:textOn=""
-                android:layout_marginRight="10dp"
-                tools:layout_editor_absoluteX="334dp"
-                android:visibility="@{movie.isPopularMovie ? View.GONE : View.VISIBLE}"
+                android:background="@drawable/star_grey"
+                android:checked="@{movie.isLiked ? true: false}"
+                android:visibility="@{movie.isPopularMovie ? View.VISIBLE : View.GONE}"
                 tools:layout_editor_absoluteY="36dp" />
         </LinearLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>

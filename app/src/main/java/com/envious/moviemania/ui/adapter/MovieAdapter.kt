@@ -54,6 +54,13 @@ class MovieAdapter(private var context: Context) : RecyclerView.Adapter<MovieAda
             BindingConverters.loadImage(binding.ivMoviePoster, IMAGE_URL + model.posterPath)
 
             binding.movie = model
+            binding.tgFavorite.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    binding.tgFavorite.setBackgroundResource(R.drawable.star_yellow)
+                } else {
+                    binding.tgFavorite.setBackgroundResource(R.drawable.star_grey)
+                }
+            }
             itemView.setOnClickListener {
             }
         }
