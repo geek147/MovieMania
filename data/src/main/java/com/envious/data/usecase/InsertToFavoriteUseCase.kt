@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class InsertToFavoriteUseCase @Inject constructor(
     private val movieRepository: MovieRepository
-) : BaseCaseWrapper<Unit, InsertToFavoriteUseCase.Params>() {
+) : BaseCaseWrapper<List<Movie>, InsertToFavoriteUseCase.Params>() {
 
-    override suspend fun build(params: Params?): Result<Unit> {
+    override suspend fun build(params: Params?): Result<List<Movie>> {
         if (params == null) throw IllegalArgumentException("Params should not be null")
 
         return movieRepository.insertFavoriteMovie(params.movie)

@@ -52,7 +52,6 @@
                 android:layout_weight="8"
                 android:orientation="vertical"
                 android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/card_category"
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -84,7 +83,6 @@
                 android:textOff=""
                 android:textOn=""
                 android:background="@drawable/star_grey"
-                android:checked="@{movie.isLiked ? true: false}"
                 android:visibility="@{movie.isPopularMovie ? View.VISIBLE : View.GONE}"
                 tools:layout_editor_absoluteY="36dp" />
         </LinearLayout>

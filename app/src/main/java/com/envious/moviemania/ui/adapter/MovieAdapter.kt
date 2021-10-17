@@ -11,8 +11,9 @@ import com.envious.moviemania.R
 import com.envious.moviemania.databinding.ListItemRowBinding
 import com.envious.moviemania.utils.BindingConverters
 
-class MovieAdapter(private var context: Context) : RecyclerView.Adapter<MovieAdapter.MainViewHolder>() {
+class MovieAdapter(private var context: Context, private var favoriteMovieListener: FavoriteMovieListener) : RecyclerView.Adapter<MovieAdapter.MainViewHolder>() {
     private var listMovies: MutableList<Movie> = mutableListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val binding: ListItemRowBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.list_item_row, parent, false)
         return MainViewHolder(binding)
@@ -44,25 +45,32 @@ class MovieAdapter(private var context: Context) : RecyclerView.Adapter<MovieAda
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         listMovies[holder.bindingAdapterPosition].let {
-            holder.bindData(it, context)
+            holder.bindData(it, context, favoriteMovieListener)
         }
     }
 
     class MainViewHolder(private val binding: ListItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(model: Movie, context: Context) {
+        fun bindData(model: Movie, context: Context, favoriteMovieListener: FavoriteMovieListener) {
             BindingConverters.loadImage(binding.ivMoviePoster, IMAGE_URL + model.posterPath)
 
             binding.movie = model
             binding.tgFavorite.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     binding.tgFavorite.setBackgroundResource(R.drawable.star_yellow)
+                    favoriteMovieListener.insetFavoriteMovie(model)
                 } else {
                     binding.tgFavorite.setBackgroundResource(R.drawable.star_grey)
+                    favoriteMovieListener.deleteFavoriteMovie(model.id)
                 }
             }
             itemView.setOnClickListener {
             }
         }
     }
+}
+
+interface FavoriteMovieListener {
+    fun insetFavoriteMovie(movie: Movie)
+    fun deleteFavoriteMovie(id: Int)
 }

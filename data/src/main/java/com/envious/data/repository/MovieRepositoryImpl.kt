@@ -93,7 +93,7 @@ class MovieRepositoryImpl @Inject constructor(
         return Result.Success(listData.toList())
     }
 
-    override suspend fun insertFavoriteMovie(movie: Movie): Result<Unit> {
+    override suspend fun insertFavoriteMovie(movie: Movie): Result<List<Movie>> {
         favoriteDao.insert(
             FavoriteEntity(
                 id = movie.id,
@@ -110,11 +110,11 @@ class MovieRepositoryImpl @Inject constructor(
             )
         )
 
-        return Result.SuccessNoReturn
+        return getFavoriteMovies()
     }
 
-    override suspend fun deleteFavoriteMovie(id: Int): Result<Unit> {
+    override suspend fun deleteFavoriteMovie(id: Int): Result<List<Movie>> {
         favoriteDao.delete(id)
-        return Result.SuccessNoReturn
+        return getFavoriteMovies()
     }
 }

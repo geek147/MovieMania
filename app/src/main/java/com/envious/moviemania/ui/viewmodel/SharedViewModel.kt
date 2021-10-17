@@ -41,16 +41,72 @@ class SharedViewModel @Inject constructor(
     private fun saveToFavorite(movie: Movie) {
         val params = InsertToFavoriteUseCase.Params(movie)
         viewModelScope.launch {
-            withContext(ioDispatchers.io) {
-                insertToFavoriteUseCase(params)
+            when (
+                val result = withContext(ioDispatchers.io) {
+                    insertToFavoriteUseCase(params)
+                }
+            ) {
+                is Result.Success -> {
+                    if (result.data.isEmpty()) {
+                        setState {
+                            copy(
+                                listFavorite = emptyList(),
+                                showLoading = false,
+                            )
+                        }
+                    } else {
+                        setState {
+                            copy(
+                                listFavorite = result.data,
+                                showLoading = false,
+                            )
+                        }
+                    }
+                }
+                is Result.Error -> {
+                    setState {
+                        copy(
+                            listFavorite = emptyList(),
+                            showLoading = false,
+                        )
+                    }
+                }
             }
         }
     }
 
     private fun removeFromFavorite(id: Int) {
         viewModelScope.launch {
-            withContext(ioDispatchers.io) {
-                deleteFromFavoriteUseCase(id)
+            when (
+                val result = withContext(ioDispatchers.io) {
+                    deleteFromFavoriteUseCase(id)
+                }
+            ) {
+                is Result.Success -> {
+                    if (result.data.isEmpty()) {
+                        setState {
+                            copy(
+                                listFavorite = emptyList(),
+                                showLoading = false,
+                            )
+                        }
+                    } else {
+                        setState {
+                            copy(
+                                listFavorite = result.data,
+                                showLoading = false,
+                            )
+                        }
+                    }
+                }
+                is Result.Error -> {
+                    setState {
+                        copy(
+                            listFavorite = emptyList(),
+                            showLoading = false,
+                        )
+                    }
+                }
             }
         }
     }

@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.envious.domain.model.Movie
 import com.envious.moviemania.R
 import com.envious.moviemania.base.BaseFragment
 import com.envious.moviemania.databinding.FragmentFavoriteBinding
+import com.envious.moviemania.ui.adapter.FavoriteMovieListener
 import com.envious.moviemania.ui.adapter.MovieAdapter
 import com.envious.moviemania.utils.Intent
 import com.envious.moviemania.utils.State
 import com.envious.moviemania.utils.ViewState
 
-class FavoriteFragment : BaseFragment<Intent,
-    State>() {
+class FavoriteFragment :
+    BaseFragment<Intent,
+        State>(),
+    FavoriteMovieListener {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
@@ -46,7 +50,7 @@ class FavoriteFragment : BaseFragment<Intent,
             val gridLayoutManager = GridLayoutManager(requireContext(), 2)
             recyclerview.layoutManager = gridLayoutManager
             recyclerview.itemAnimator = null
-            adapter = MovieAdapter(requireContext())
+            adapter = MovieAdapter(requireContext(), this@FavoriteFragment)
             adapter.setHasStableIds(true)
             recyclerview.adapter = adapter
         }
@@ -103,5 +107,11 @@ class FavoriteFragment : BaseFragment<Intent,
                 }
             }
         }
+    }
+
+    override fun insetFavoriteMovie(movie: Movie) {
+    }
+
+    override fun deleteFavoriteMovie(id: Int) {
     }
 }
