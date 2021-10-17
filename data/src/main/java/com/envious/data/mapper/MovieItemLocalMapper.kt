@@ -17,7 +17,7 @@ class MovieItemLocalMapper : BaseMapperRepository<FavoriteEntity, Movie> {
         originalTitle = item.originalTitle.orEmpty(),
         popularity = item.popularity ?: 0.0,
         isLiked = true,
-        isPopularMovie = true
+        isPopularMovie = false
     )
 
     override fun transformToRepository(item: Movie): FavoriteEntity = FavoriteEntity(

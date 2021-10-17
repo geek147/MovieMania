@@ -9,6 +9,7 @@ import com.envious.data.BuildConfig.IMAGE_URL
 import com.envious.domain.model.Movie
 import com.envious.moviemania.R
 import com.envious.moviemania.databinding.ListItemRowBinding
+import com.envious.moviemania.ui.DetailActivity
 import com.envious.moviemania.utils.BindingConverters
 
 class MovieAdapter(private var context: Context, private var favoriteMovieListener: FavoriteMovieListener) : RecyclerView.Adapter<MovieAdapter.MainViewHolder>() {
@@ -65,6 +66,9 @@ class MovieAdapter(private var context: Context, private var favoriteMovieListen
                 }
             }
             itemView.setOnClickListener {
+                context.startActivity(
+                    DetailActivity.createIntent(context, model)
+                )
             }
         }
     }
