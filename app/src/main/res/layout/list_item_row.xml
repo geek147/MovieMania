@@ -82,7 +82,8 @@
                 android:layout_gravity="center_vertical"
                 android:textOff=""
                 android:textOn=""
-                android:background="@drawable/star_grey"
+                android:checked="@{movie.isLiked}"
+                android:background="@{movie.isLiked ? @drawable/star_yellow : @drawable/star_grey}"
                 android:visibility="@{movie.isPopularMovie ? View.VISIBLE : View.GONE}"
                 tools:layout_editor_absoluteY="36dp" />
         </LinearLayout>

@@ -59,9 +59,11 @@ class MovieAdapter(private var context: Context, private var favoriteMovieListen
             binding.tgFavorite.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     binding.tgFavorite.setBackgroundResource(R.drawable.star_yellow)
+                    model.isLiked = true
                     favoriteMovieListener.insetFavoriteMovie(model)
                 } else {
                     binding.tgFavorite.setBackgroundResource(R.drawable.star_grey)
+                    model.isLiked = false
                     favoriteMovieListener.deleteFavoriteMovie(model.id)
                 }
             }

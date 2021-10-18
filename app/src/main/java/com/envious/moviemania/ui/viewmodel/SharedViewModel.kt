@@ -29,9 +29,9 @@ class SharedViewModel @Inject constructor(
             Intent.GetFavorites -> {
                 getFavorites()
             }
-            Intent.GetPopular -> getPopularMovie(1, false)
+            Intent.GetPopular -> getPopularFavorites(1, false)
             Intent.GetTopRated -> getTopRatedMovie(1, false)
-            is Intent.LoadNextPopular -> getPopularMovie(intent.page, true)
+            is Intent.LoadNextPopular -> getPopularFavorites(intent.page, true)
             is Intent.LoadNextTopRated -> getTopRatedMovie(intent.page, true)
             is Intent.RemoveFromFavorite -> removeFromFavorite(intent.id)
             is Intent.SaveToFavorite -> saveToFavorite(intent.movie)
@@ -186,20 +186,23 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    private fun getPopularMovie(page: Int, isLoadMore: Boolean) {
-        setState {
-            copy(
-                showLoading = true,
-            )
-        }
-
+    private fun getPopularMovie(page: Int, isLoadMore: Boolean, favorites: List<Movie>) {
         viewModelScope.launch {
+
             when (
                 val result = withContext(ioDispatchers.io) {
                     getPopularUseCase(page)
                 }
             ) {
                 is Result.Success -> {
+                    if (result.data.isNotEmpty()) {
+                        result.data.forEach { movie ->
+                            favorites.forEach { favorite ->
+                                if (movie.id == favorite.id) movie.isLiked = true else false
+                            }
+                        }
+                    }
+
                     if (isLoadMore) {
                         if (result.data.isEmpty()) {
                             setState {
@@ -255,6 +258,39 @@ class SharedViewModel @Inject constructor(
                                 viewState = ViewState.ErrorFirstInit
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getPopularFavorites(page: Int, isLoadMore: Boolean) {
+        setState {
+            copy(
+                showLoading = true,
+            )
+        }
+
+        viewModelScope.launch {
+            when (
+                val result = withContext(ioDispatchers.io) {
+                    getFavoritesUseCase()
+                }
+            ) {
+                is Result.Success -> {
+                    getPopularMovie(page, isLoadMore, result.data)
+                    setState {
+                        copy(
+                            listFavorite = result.data,
+                        )
+                    }
+                }
+                is Result.Error -> {
+                    getPopularMovie(page, isLoadMore, emptyList())
+                    setState {
+                        copy(
+                            listFavorite = emptyList(),
+                        )
                     }
                 }
             }
